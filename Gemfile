@@ -5,6 +5,7 @@ ruby "3.1.2"
 
 gem "rails", "~> 7.0.3", ">= 7.0.3.1"
 gem "sprockets-rails"
+gem "bootstrap-sass", "3.4.1"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "importmap-rails"
