@@ -6,7 +6,7 @@ RSpec.describe "StaticPages", type: :system do
   end
 
   describe 'root' do
-    it 'root_pathへのリンクが2つ、help, about, contactへのリンクが表示されていること' do
+    it 'root_pathへのリンクが2つ、help, about, contact, Sign up now!へのリンクが表示されていること' do
       visit root_path
       link_to_root = page.find_all("a[href=\"#{root_path}\"]")
 
@@ -14,6 +14,7 @@ RSpec.describe "StaticPages", type: :system do
       expect(page).to have_link 'Help', href: help_path
       expect(page).to have_link 'About', href: about_path
       expect(page).to have_link 'Contact', href: contact_path
+      expect(page).to have_link 'Sign up now!', href: signup_path
     end
   end
 end
