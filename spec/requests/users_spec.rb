@@ -12,4 +12,41 @@ RSpec.describe "Users", type: :request do
       expect(response.body).to include full_title('Sign up')
     end
   end
+
+  describe "POST /users #create" do
+    it "invalid signup information" do
+      get signup_path
+      expect {
+        post users_path, params: { user: { name: "",
+                                           email: "user@invalid",
+                                           password: "foo",
+                                           password_confirmation: "bar" } }
+        }.to_not change(User, :count)
+    end
+
+    
+    context "in case of valid value" do
+      let(:user_params) { { user: { name: "Example User",
+        email: "user@example.com",
+        password: "password",
+        password_confirmation: "password" } } }
+        
+        it "valid signup information" do
+          expect {
+            post users_path, params: user_params
+          }.to change(User, :count).by 1
+      end
+      
+      it "redirect to users/show" do
+        post users_path, params: user_params
+        user = User.last
+        expect(response).to redirect_to user
+      end
+      
+      it "should display flash" do
+        post users_path, params: user_params
+        expect(flash).to be_any
+      end
+    end
+  end
 end
