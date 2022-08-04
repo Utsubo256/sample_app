@@ -31,10 +31,10 @@ RSpec.describe "Users", type: :request do
         password: "password",
         password_confirmation: "password" } } }
         
-        it "valid signup information" do
-          expect {
-            post users_path, params: user_params
-          }.to change(User, :count).by 1
+      it "valid signup information" do
+        expect {
+          post users_path, params: user_params
+        }.to change(User, :count).by 1
       end
       
       it "redirect to users/show" do
@@ -46,6 +46,11 @@ RSpec.describe "Users", type: :request do
       it "should display flash" do
         post users_path, params: user_params
         expect(flash).to be_any
+      end
+
+      it "ログイン状態であること" do
+        post users_path, params: user_params
+        expect(is_logged_in?).to be_truthy
       end
     end
   end

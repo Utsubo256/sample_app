@@ -2,6 +2,7 @@
 @import "bootstrap";
 
 /* mixins, variables, etc. */
+
 $gray-medium-light: #eaeaea;
 
 @mixin box-sizing {
@@ -11,6 +12,7 @@ $gray-medium-light: #eaeaea;
 }
 
 /* universal */
+
 body {
   padding-top: 60px;
 }
@@ -31,6 +33,7 @@ textarea {
 }
 
 /* typography */
+
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
@@ -62,19 +65,20 @@ p {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: #fff;
+  color: white;
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
   &:hover {
-    color: #fff;
+    color: white;
     text-decoration: none;
   }
 }
 
 
 /* footer */
+
 footer {
   margin-top: 45px;
   padding-top: 5px;
@@ -99,16 +103,36 @@ footer {
   }
 }
 
+@media (max-width: 800px) {
+  footer {
+    small {
+      display: block;
+      float: none;
+      margin-bottom: 1em;
+    }
+    ul {
+      float: none;
+      padding: 0;
+      li {
+        float: none;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
 /* miscellaneous */
+
 .debug_dump {
   clear: both;
   float: left;
   width: 100%;
   margin-top: 45px;
-  @include box_sizing;
+  // @include box_sizing;
 }
 
 /* sidebar */
+
 aside {
   section.user_info {
     margin-top: 20px;
@@ -145,6 +169,7 @@ aside {
 }
 
 /* forms */
+
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
   width: 100%;
@@ -169,4 +194,10 @@ input {
   .form-control {
     color: $state-danger-text;
   }
+}
+
+/* Dropdown menu */
+
+.dropdown-menu.active {
+  display: block;
 }
