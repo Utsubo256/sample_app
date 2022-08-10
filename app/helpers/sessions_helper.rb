@@ -6,19 +6,22 @@ module SessionsHelper
     session[:session_token] = user.session_token
   end
 
+  # ユーザを永続セッションに保存する
   def remember(user)
     user.remember
     cookies.permanent.encrypted[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
 
-  # 記憶トークンのcookieに対応するユーザーを返す
+  # 現在ログイン中のユーザを返す（いる場合）
   def current_user
     if (user_id = session[:user_id])
-      @current_user ||= User.find_by(id: user_id)
+      # @current_user ||= User.find_by(id: user_id)
+      user = User.find_by(id: user_id)
+      @current_user ||= user if session[:session_token] == user.session_token
     elsif (user_id = cookies.encrypted[:user_id])
       user = User.find_by(id: user_id)
-      if user&.authenticated?(cookies[:remember_token])
+      if user&.authenticated?(:remember, cookies[:remember_token])
         log_in user
         @current_user = user
       end
@@ -42,16 +45,8 @@ module SessionsHelper
 
   def log_out
     forget(current_user)
-    # session.delete(:user_id)
     reset_session
     @current_user = nil
-  end
-
-  # 記憶したURL（もしくはデフォルト値）にリダイレクト
-  def redirect_back_or(default)
-    puts "session[:forwarding_url] = #{session[:forwarding_url]}"
-    redirect_to(session[:forwarding_url] || default)
-    session.delete(:forwarding_url)
   end
 
   # アクセスしようとしたURLを覚えておく
