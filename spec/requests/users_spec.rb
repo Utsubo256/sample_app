@@ -30,6 +30,10 @@ RSpec.describe "Users", type: :request do
         email: "user@example.com",
         password: "password",
         password_confirmation: "password" } } }
+
+      before do
+        ActionMailer::Base.deliveries.clear
+      end
         
       it "valid signup information" do
         expect {
@@ -51,6 +55,16 @@ RSpec.describe "Users", type: :request do
       it "ログイン状態であること" do
         post users_path, params: user_params
         expect(is_logged_in?).to be_truthy
+      end
+
+      it "メールが1件存在すること" do
+        post users_path, params: user_params
+        expect(ActionMailer::Base.deliveries.size).to eq 1
+      end
+
+      it "登録時点ではactivateされていないこと" do
+        post users_path, params: user_params
+        expect(User.last).to_not be_activated
       end
     end
   end
@@ -81,6 +95,24 @@ RSpec.describe "Users", type: :request do
           expect(response.body).to include "<a href=\"#{user_path(user)}\">"
         end
       end
+
+      it "activateされていないユーザは表示されないこと" do
+        not_activated_user = FactoryBot.create(:mercury)
+        log_in_as user
+        get users_path
+        expect(response.body).to_not include not_activated_user.name
+      end
+    end
+  end
+
+  describe "GET /users/{id}" do
+    it "有効化されていないユーザの場合はrootにリダイレクトすること" do
+      user = FactoryBot.create(:user)
+      not_activated_user = FactoryBot.create(:mercury)
+
+      log_in_as user
+      get user_path(not_activated_user)
+      expect(response).to redirect_to root_path
     end
   end
 
