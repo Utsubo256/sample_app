@@ -28,5 +28,13 @@ RSpec.describe Micropost, type: :model do
       micropost.content = "a" * 141
       expect(micropost).to_not be_valid
     end
+
+    it "投稿したユーザが削除された場合、そのユーザのMicropostも削除されること" do
+      post = FactoryBot.create(:most_recent)
+      user = post.user
+      expect {
+        user.destroy
+      }.to change(Micropost, :count).by -1
+    end
   end
 end
