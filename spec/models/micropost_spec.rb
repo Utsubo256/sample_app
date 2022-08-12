@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Micropost, type: :model do
   let(:user) { FactoryBot.create(:user) }
-  let(:micropost) { Micropost.new(content: "Lorem ipsum", user_id: user.id) }
+  let(:micropost) { user.microposts.build(content: "Lorem ipsum") }
 
   it "有効であること" do
     expect(micropost).to be_valid
@@ -11,6 +11,11 @@ RSpec.describe Micropost, type: :model do
   it "user_idがない場合は、無効であること" do
     micropost.user_id = nil
     expect(micropost).to_not be_valid
+  end
+
+  it "並び順は投稿の新しい順になっていること" do
+    FactoryBot.send(:user_with_posts)
+    expect(FactoryBot.create(:most_recent)).to eq Micropost.first
   end
 
   describe "content" do
