@@ -32,6 +32,17 @@ RSpec.describe "MicroPosts", type: :system do
       expect(page).to have_content "1 micropost"
     end
 
+    it "画像添付ができること" do
+      expect {
+        fill_in "micropost_content", with: "This micropost really ties the room together"
+        attach_file "micropost[image]", "#{Rails.root}/spec/factories/kitten.jpg"
+        click_button "Post"
+      }.to change(Micropost, :count).by 1
+
+      attached_post = Micropost.first
+      expect(attached_post.image).to be_attached
+    end
+
     context "有効な送信の場合" do
       it "投稿されること" do
         expect {

@@ -18,6 +18,8 @@ gem "bcrypt"
 gem "faker"
 gem "will_paginate"
 gem "bootstrap-will_paginate"
+gem "active_storage_validations", "0.9.7"
+gem "image_processing", "1.12.2"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
@@ -33,4 +35,8 @@ group :test do
   gem "webdrivers"
   gem "rspec-rails"
   gem "factory_bot_rails"
+end
+
+group :production do
+  gem "aws-sdk-s3", "1.113.0", require: false
 end
