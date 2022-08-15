@@ -14,7 +14,6 @@ class UsersController < ApplicationController
     redirect_to root_url and return unless @user.activated?
   end
 
-  # get /signup
   def new
     @user = User.new
   end
