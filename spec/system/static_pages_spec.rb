@@ -17,4 +17,17 @@ RSpec.describe "StaticPages", type: :system do
       expect(page).to have_link 'Sign up now!', href: signup_path
     end
   end
+
+  describe "home" do
+    it "followingとfollowersが正しく表示されること" do
+      # user = FactoryBot.send(:create_relationships)
+      # log_in_as user
+      # expect(page).to have_content "10 following"
+      # expect(page).to have_content "10 followers"
+
+      # visit user_path(user)
+      # expect(page).to have_content "10 following"
+      # expect(page).to have_content "10 followers"
+    end
+  end
 end
